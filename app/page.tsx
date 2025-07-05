@@ -1,4 +1,5 @@
 "use client"
+import About from "@/components/tabs/about";
 import { Navigation } from "../components/navigation";
 import { useState } from "react";
 
@@ -9,7 +10,7 @@ function renderTab(tab: String) {
     case 'Medications':
       return 'Medications';
     default:
-      return 'About';
+      return <About />;
   }
 }
 
