@@ -104,8 +104,5 @@
 		&:hover {
 			background-color: var(--color-blue-300);
 		}
-		&:focus {
-			box-shadow: 0 0 0 2px var(--blue-7);
-		}
 	}
 }

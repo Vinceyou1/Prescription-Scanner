@@ -7,6 +7,8 @@ import tabStyles from "./tabs.module.css";
 import { confirmSignUp, signIn, signUp } from "@aws-amplify/auth"
 import { useState } from "react";
 
+// TODO: add actually good confirmation code handling
+
 async function Confirmation(email: string, setError: (error: string | null) => void) {
 	const code = prompt("Please enter the confirmation code sent to your email: ");
 
@@ -50,14 +52,13 @@ async function SignIn(email: string, password: string, setError: (error: string 
 
 
 export default function Login() {
-	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	return (
-		<Dialog.Root open={open} onOpenChange={setOpen}>
+		<Dialog.Root>
 			<Dialog.Trigger asChild>
 				<button className="w-full flex flex-row items-center justify-between text-lg
-				p-4 rounded-sm cursor-pointer text-gray-500 hover:text-black hover:bg-gray-100"
+				p-4 rounded-sm cursor-pointer text-gray-500 hover:text-black hover:bg-gray-100 transition-colors"
 				>
 					Log In
 				</button>

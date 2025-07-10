@@ -23,8 +23,9 @@ export function Navigation({
 
   const links = data.map((item) => (
     <button
+      // TODO: extract this to an export so login/logout can use it too
       className="w-full flex flex-row items-center justify-between text-lg p-4 rounded-sm cursor-pointer
-        text-gray-500 hover:text-black hover:bg-gray-100 data-active:bg-gray-300 data-active:text-black"
+        text-gray-500 hover:text-black hover:bg-gray-100 data-active:bg-gray-300 data-active:text-black transition-colors"
       data-active={item.label === tab || undefined}
       key={item.label}
       onClick={(event) => {
