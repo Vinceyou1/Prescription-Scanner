@@ -1,4 +1,4 @@
-import { signOut } from "aws-amplify/auth"
+import { signOut } from "@aws-amplify/auth"
 
 function handleSignOut() {
 	signOut().catch((error) => {

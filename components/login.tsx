@@ -4,7 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs"
 import dialogStyles from "./dialog.module.css";
 import tabStyles from "./tabs.module.css";
-import { confirmSignUp, signIn, signUp } from "aws-amplify/auth"
+import { confirmSignUp, signIn, signUp } from "@aws-amplify/auth"
 import { useState } from "react";
 
 async function Confirmation(email: string, setError: (error: string | null) => void) {
