@@ -1,18 +1,14 @@
-import type { Metadata } from "next";
+"use client"
 import "./globals.css";
 
 import React from 'react';
 
-import { Amplify } from "@aws-amplify/core";
-import outputs from "../amplify_outputs.json"
+import { Amplify } from "aws-amplify";
+import outputs from "@/amplify_outputs.json"
 import { UserProvider } from "@/contexts/UserContext";
 
 
 Amplify.configure(outputs)
-
-export const metadata: Metadata = {
-  title: "AI Pill Planner",
-};
 
 
 export default function RootLayout({
