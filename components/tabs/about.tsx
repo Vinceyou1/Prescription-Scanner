@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function About() {
 	return (
-		<div className="flex flex-col justify-between w-full h-full px-16 pb-8 pt-36">
+		<div className="flex flex-col justify-between w-full h-full px-8 pt-24">
 			<div className="flex flex-row w-full">
 				<p
 					className="text-xl w-1/2"
@@ -31,7 +31,7 @@ export default function About() {
 			</div>
 			<p className="mt-8 text-center text-sm">
 				All data is processed by an in-browser mini-LLM to ensure data privacy <br />
-				Built with TinyLlama-1.1B, EasyOCR, and React/Next.js
+				Built with TinyLlama-1.1B and EasyOCR
 			</p>
 		</div>
 	)

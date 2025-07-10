@@ -1,8 +1,10 @@
-import { Dispatch, SetStateAction, useState } from 'react';
-import { MdCalendarMonth, MdOutlineAccountCircle } from "react-icons/md";
+import { Dispatch, SetStateAction } from 'react';
+import { MdCalendarMonth } from "react-icons/md";
 import { TbPill } from "react-icons/tb";
 import { FiInfo } from "react-icons/fi";
 import Login from './login';
+import { useUser } from '@/contexts/UserContext';
+import Logout from './logout';
 
 const data = [
   { label: 'My Schedule', icon: MdCalendarMonth },
@@ -14,9 +16,11 @@ export function Navigation({
   tab,
   setTab
 }: Readonly<{
-  tab: String;
+  tab: string;
   setTab: Dispatch<SetStateAction<string>>;
 }>) {
+  const user = useUser();
+
   const links = data.map((item) => (
     <button
       className="w-full flex flex-row items-center justify-between text-lg p-4 rounded-sm cursor-pointer
@@ -45,7 +49,7 @@ export function Navigation({
         </div>
       </div>
       <div className="pt-4 border-t-1 border-gray-300">
-        <Login />
+        {user ? <Logout /> : <Login />}
       </div>
     </nav>
   );
