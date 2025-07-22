@@ -30,8 +30,7 @@ export default function About() {
 				</div>
 			</div>
 			<p className="mt-8 text-center text-sm">
-				All data is processed by an in-browser mini-LLM to ensure data privacy <br />
-				Built with TinyLlama-1.1B and EasyOCR
+				Built with React/Next.js, Tailwind CSS, Tesseract OCR, and AWS Bedrock.
 			</p>
 		</div>
 	)

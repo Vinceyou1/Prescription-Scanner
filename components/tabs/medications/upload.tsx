@@ -1,10 +1,10 @@
 import { useRef } from "react";
 
 export default function Upload({ 
-	disabled,
+	processing,
 	setImageSrc
 } : {
-	disabled: boolean,
+	processing: boolean,
 	setImageSrc: (src: string | null) => void
 }) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -18,9 +18,9 @@ export default function Upload({
 		<div className="w-1/2">
 			<button 
 				onClick={handleClick}
-				disabled={disabled}
+				disabled={processing}
 				className="w-full rounded-sm bg-blue-200 text-blue-800 p-2 hover:bg-blue-300 transition-colors">
-				Upload Image
+				{processing ? "Processing..." : "Upload Image"}
 			</button>
 
 			<input
@@ -31,8 +31,8 @@ export default function Upload({
 				accept="image/*"
 				ref={fileInputRef} // Reference to the file input element
 				// Event handler to capture file selection and update the state
+
 				onChange={(event) => {
-					// console.log(event.target.files[0]); // Log the selected file
 					const file = event.target.files?.[0]; // Get the first file from the FileList
 					if (!file) return;
 
@@ -42,6 +42,7 @@ export default function Upload({
 						setImageSrc(base64String); // final setter like your webcam code
 					};
 					reader.readAsDataURL(file); // 🔥 This converts the image to a base64 data URL
+					(document.getElementById("upload") as HTMLInputElement).value = ""; // Reset the input value to allow re-uploading the same file
 				}}
 			/>
 		</div>
