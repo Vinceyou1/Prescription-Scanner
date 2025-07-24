@@ -2,18 +2,19 @@ import { useCallback, useEffect, useState } from "react";
 import MedicationWebcam from "./webcam";
 import Upload from "./upload";
 import Tesseract from "tesseract.js";
-import { Medication, timeNumberToString } from "@/data/types";
+import { Medication, Time, timeNumberToTime, timeToString } from "@/data/types";
+import MedicationForm from "./medication-form";
+import { useUser } from '@/contexts/UserContext';
 
 export default function NewMedication() {
+	const user = useUser();
 	const [imageSrc, setImageSrc] = useState<string | null>(null);
 	const [medication, setMedication] = useState<Medication>({
 		name: "",
-		quantity: 0,
+		quantity: 1,
 		unit: "",
 		period: 1,
-		times: new Map<number, Array<number>>([
-			[0, [0]]
-		]),
+		times: new Map<number, Array<Time>>(),
 		notes: ""
 	});
 	const generateSummary = useCallback(async (image: string) => {
@@ -60,12 +61,14 @@ export default function NewMedication() {
 				quantity: parsedResult.quantity || 0,
 				unit: parsedResult.unit || "",
 				period: parsedResult.period || 0,
-				times: new Map<number, Array<number>>(),
+				times: new Map<number, Array<Time>>(),
 				notes: parsedResult.notes || ""
 			};
 			for(const [day, times] of Object.entries(parsedResult.times || {})) {
 				const convertedTimes = times as Array<number>;
-				medication.times.set(Number(day), convertedTimes);
+				medication.times.set(Number(day), convertedTimes.map(time => {
+					return timeNumberToTime(time);
+				}));
 			}
 			console.log("Parsed Result:", parsedResult);
 			console.log("Medication Object:", medication);
@@ -73,6 +76,7 @@ export default function NewMedication() {
 			setImageSrc(null); // Clear the image after processing
 			setMedication(medication); // Update the medication state
 		} catch (err) {
+			setImageSrc(null); // Clear the image after processing
 			console.log(err);
 		}
 		// console.log("Generated result:", result);
@@ -91,18 +95,20 @@ export default function NewMedication() {
 				<MedicationWebcam setImageSrc={setImageSrc} processing={imageSrc != null} />
 				<Upload setImageSrc={setImageSrc} processing={imageSrc != null} />
 			</div>
-			<div>
-				Name: {medication.name || "N/A"}<br />
-				Quantity: {medication.quantity || "N/A"}<br />
-				Unit: {medication.unit || "N/A"}<br />
-				Period: {medication.period || "N/A"}<br />
-				Times: {Array.from(medication.times.entries()).map(([time, days]) => (
-					<div key={time}>
-						Day {time + 1}: {days.map((day) => timeNumberToString(day)).join(", ")}
+			<MedicationForm medication={medication} setMedication={setMedication}/>
+			{/* For Testing */}
+			{/* <div>
+				Name: {medication.name}<br />
+				Quantity: {medication.quantity}<br />
+				Unit: {medication.unit}<br />
+				Period: {medication.period}<br />
+				Times: {Array.from(medication.times.entries()).map(([day, times]) => (
+					<div key={day}>
+						Day {day}: {times.map(time => timeToString(time)).join(", ")}
 					</div>
-				)) || "N/A"}<br />
-				Notes: {medication.notes || "N/A"}
-			</div>
+				))}<br />
+				Notes: {medication.notes}	
+			</div> */}
 		</div>
 	)
 }

@@ -1,5 +1,3 @@
-// import { assert } from "console";
-
 /**
  * @property {string} name - the name of the medication
  * @property {number} quantity - how much to take
@@ -8,33 +6,36 @@
  * @property {Map<number, Array<number>>} times - each day in [0, period - 1] mapped to dosage times
  * @property {string} notes - any additional notes (i.e. take with food)
  */
-
 export type Medication = {
 	name: string,
 	quantity: number,
 	unit: string,
 	period: number,
-	times: Map<number, Array<number>>,
+	times: Map<number, Array<Time>>,
 	notes: string,
 };
 
-export function timeToNumber(hour: number, minute: number) {
-	// assert(hour >= 0);
-	// assert(hour <= 23);
-	// assert(minute >= 0);
-	// assert(minute <= 59);
-	return hour * 100 + minute
+export type Time = {
+	hour: number, // 0-11
+	minute: number, // 0-59
+	isPM: boolean, // true for PM, false for AM
 }
 
-export function timeNumberToString(time: number) {
-	let minute = time % 100;
-	var hour = time / 100;
-	let isPM = hour >= 12;
-	if(isPM) hour -= 12;
-	if(hour === 0) hour = 12; // 12 AM or 12 PM
+export function timeNumberToTime(time: number): Time {
+	const minute = time % 100;
+	let hour = Math.floor(time / 100);
+	const isPM = hour >= 12;
+	if (isPM) hour -= 12;
+	if (hour === 0) hour = 12; // 12 AM or 12 PM
+	return { hour, minute, isPM };
+}
+
+// TODO: figure out timezone stuff? not really necessary tbh
+
+export function timeToString(time: Time) {
 	return (
-		(hour < 10 ? "0" + hour : hour ) + ":" +
-		(minute < 10 ? "0" + minute : minute ) + " " +
-		(isPM ? "PM": "AM")
+		(time.hour || 12).toString().padStart(2, "0") + ":" +
+		time.minute.toString().padStart(2, "0") + " " +
+		(time.isPM ? "PM": "AM")
 	);
 }

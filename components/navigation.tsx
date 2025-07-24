@@ -25,7 +25,7 @@ export function Navigation({
     <button
       // TODO: extract this to an export so login/logout can use it too
       className="w-full flex flex-row items-center justify-between text-lg p-4 rounded-sm cursor-pointer
-        text-gray-500 hover:text-black hover:bg-gray-100 data-active:bg-gray-300 data-active:text-black transition-colors"
+        text-gray-500 hover:text-black hover:bg-gray-100 data-active:bg-gray-200 data-active:text-black transition-colors"
       data-active={item.label === tab || undefined}
       key={item.label}
       onClick={(event) => {
@@ -39,11 +39,11 @@ export function Navigation({
   ));
 
   return (
-    <nav className="w-1/5 p-4 h-full flex flex-col justify-between border-r-1 border-gray-300">
+    <nav className="w-1/5 p-4 flex flex-col justify-between border-r-1 border-gray-300">
       <div className="flex flex-col space-y-4">
         <div className="flex flex-row items-center justify-between pb-4 border-b-1 border-gray-300">
           <h1 className="text-xl ">AI Pill Planner</h1>
-          <span className="text-sm rounded-md bg-gray-300 px-2 py-1 text-black font-medium">v1.0</span>
+          <span className="text-sm rounded-md bg-gray-200 px-2 py-1 text-black font-medium">v1.0</span>
         </div>
         <div className="flex flex-col justify-stretch gap-y-4">
           {links}
