@@ -7,7 +7,6 @@ import Medications from "@/components/tabs/medications/medications";
 import { useUser } from "@/contexts/UserContext";
 import PleaseLogin from "@/components/tabs/please-login";
 
-
 function renderTab(tab: string, signedIn: boolean = false) {
   if(tab == "About") {
     return <About />;

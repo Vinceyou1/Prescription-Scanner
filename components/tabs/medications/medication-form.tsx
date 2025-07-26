@@ -4,6 +4,13 @@ import styles from "./styles.module.css";
 import { Medication, Time } from "@/data/types";
 import { FaRegTrashCan } from "react-icons/fa6";
 
+import type { Schema } from '@/amplify/data/resource'
+import { generateClient } from 'aws-amplify/data'
+import { useData } from "@/contexts/DataContext";
+import { useEffect, useState } from "react";
+
+const client = generateClient<Schema>();
+
 export default function MedicationForm({
   medication,
   setMedication,
@@ -11,12 +18,32 @@ export default function MedicationForm({
   medication: Medication;
   setMedication: (medication: Medication) => void;
 }) {
+  const userData = useData();
+
   return (
     <Form.Root
       className="w-full"
       onSubmit={(e) => {
         e.preventDefault();
         console.log("Submitted medication:", medication);
+        client.models.medication.create({
+          ...medication,
+          times: JSON.stringify(Object.fromEntries(medication.times)), // Convert Map to object for storage
+          userId: userData?.id || "",
+        }).then(() => {
+          console.log("Medication created successfully");
+          setMedication({
+            name: "",
+            quantity: 1,
+            unit: "",
+            period: 1,
+            times: new Map<number, Array<Time>>(),
+            notes: "",
+          });
+        }).catch((error) => {
+          console.error("Error creating medication:", error);
+          alert("Failed to create medication. Please try again.");
+        });
         // Here you would typically handle the submission, e.g., send to an API
       }}
     >

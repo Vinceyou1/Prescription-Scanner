@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import MedicationWebcam from "./webcam";
 import Upload from "./upload";
 import Tesseract from "tesseract.js";
-import { Medication, Time, timeNumberToTime, timeToString } from "@/data/types";
+import { Medication, Time, timeNumberToTime } from "@/data/types";
 import MedicationForm from "./medication-form";
-import { useUser } from '@/contexts/UserContext';
+
 
 export default function NewMedication() {
-	const user = useUser();
+
 	const [imageSrc, setImageSrc] = useState<string | null>(null);
 	const [medication, setMedication] = useState<Medication>({
 		name: "",
@@ -55,7 +55,9 @@ export default function NewMedication() {
 				// 'value' is a Uint8Array (chunk of data). Convert it to a string.
 				result += new TextDecoder().decode(value);
 			}
+			// const parsedResult = JSON.parse("\n{\n    \"name\": \"IETOPRC B\",\n    \"quantity\": 1,\n    \"unit\": \"tablet\", \n    \"period\": 1,\n    \"times\": {\n        \"0\": [0900, 1700]\n    },\n    \"notes\": \"Take twice daily by mouth\"\n}\n")
 			const parsedResult = JSON.parse(JSON.parse(result).body.output.message.content[0].text);
+			console.log(parsedResult)
 			const medication: Medication = {
 				name: parsedResult.name || "",
 				quantity: parsedResult.quantity || 0,
@@ -64,7 +66,8 @@ export default function NewMedication() {
 				times: new Map<number, Array<Time>>(),
 				notes: parsedResult.notes || ""
 			};
-			for(const [day, times] of Object.entries(parsedResult.times || {})) {
+			for (const [day, times] of Object.entries(parsedResult.times || {})) {
+				console.log(day, times);
 				const convertedTimes = times as Array<number>;
 				medication.times.set(Number(day), convertedTimes.map(time => {
 					return timeNumberToTime(time);

@@ -1,17 +1,28 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 
-/*== STEP 1 ===============================================================
-The section below creates a Todo database table with a "content" field. Try
-adding a new "isDone" field as a boolean. The authorization rule below
-specifies that any unauthenticated user can "create", "read", "update", 
-and "delete" any "Todo" records.
-=========================================================================*/
+// type Medication = {
+// 	name: string,
+// 	quantity: number,
+// 	unit: string,
+// 	period: number,
+// 	times: Map<number, Array<Time>>,
+// 	notes: string,
+// };
+
 const schema = a.schema({
-  Todo: a
-    .model({
-      content: a.string(),
-    })
-    .authorization((allow) => [allow.guest()]),
+  user: a.model({
+    medications: a.hasMany('medication', 'userId'),
+  }).authorization((allow) => [allow.authenticated()]),
+  medication: a.model({
+    userId: a.id(),
+    user: a.belongsTo('user', 'userId'),
+    name: a.string().required(),
+    quantity: a.integer().required(),
+    unit: a.string(),
+    period: a.integer().required(),
+    times: a.json().required(), // Using JSON to store Map<number, Array<Time>>
+    notes: a.string(),
+  }).authorization((allow) => [allow.authenticated()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -19,7 +30,7 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: 'identityPool',
+    defaultAuthorizationMode: 'userPool',
   },
 });
 

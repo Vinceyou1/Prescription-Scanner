@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "us-east-2_oD8emnZPq",
+    "user_pool_id": "us-east-2_HIbYb32Fz",
     "aws_region": "us-east-2",
-    "user_pool_client_id": "6uusds6oihrnps00ljd4re9e3m",
-    "identity_pool_id": "us-east-2:c72244ab-8343-4eb5-8f7e-3577c46477c2",
+    "user_pool_client_id": "14ql4mopiof4d1bvt4rjm9ku1l",
+    "identity_pool_id": "us-east-2:103e2cc3-a6cc-4b3e-9724-88072d0aa176",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -26,17 +26,17 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://s56thyrpo5fh3ncxpygmjo7bia.appsync-api.us-east-2.amazonaws.com/graphql",
+    "url": "https://b6zwi4ll6vfb7bu3dpqw7mastq.appsync-api.us-east-2.amazonaws.com/graphql",
     "aws_region": "us-east-2",
-    "default_authorization_type": "AWS_IAM",
+    "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
-      "AMAZON_COGNITO_USER_POOLS"
+      "AWS_IAM"
     ],
     "model_introspection": {
       "version": 1,
       "models": {
-        "Todo": {
-          "name": "Todo",
+        "user": {
+          "name": "user",
           "fields": {
             "id": {
               "name": "id",
@@ -45,8 +45,138 @@
               "isRequired": true,
               "attributes": []
             },
-            "content": {
-              "name": "content",
+            "medications": {
+              "name": "medications",
+              "isArray": true,
+              "type": {
+                "model": "medication"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true,
+              "association": {
+                "connectionType": "HAS_MANY",
+                "associatedWith": [
+                  "userId"
+                ]
+              }
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "users",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "private",
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "medication": {
+          "name": "medication",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "user": {
+              "name": "user",
+              "isArray": false,
+              "type": {
+                "model": "user"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "userId"
+                ]
+              }
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "quantity": {
+              "name": "quantity",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "unit": {
+              "name": "unit",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "period": {
+              "name": "period",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "times": {
+              "name": "times",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": true,
+              "attributes": []
+            },
+            "notes": {
+              "name": "notes",
               "isArray": false,
               "type": "String",
               "isRequired": false,
@@ -70,7 +200,7 @@
             }
           },
           "syncable": true,
-          "pluralName": "Todos",
+          "pluralName": "medications",
           "attributes": [
             {
               "type": "model",
@@ -81,8 +211,7 @@
               "properties": {
                 "rules": [
                   {
-                    "allow": "public",
-                    "provider": "iam",
+                    "allow": "private",
                     "operations": [
                       "create",
                       "update",

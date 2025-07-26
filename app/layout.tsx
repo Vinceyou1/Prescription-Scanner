@@ -6,10 +6,9 @@ import React from 'react';
 import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json"
 import { UserProvider } from "@/contexts/UserContext";
-
+import { DataProvider } from "@/contexts/DataContext";
 
 Amplify.configure(outputs)
-
 
 export default function RootLayout({
   children,
@@ -33,7 +32,9 @@ export default function RootLayout({
         className="h-full"
       >
         <UserProvider>
-          {children}
+          <DataProvider>
+            {children}
+          </DataProvider>
         </UserProvider>
       </body>
     </html>
