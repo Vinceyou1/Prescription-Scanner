@@ -6,8 +6,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 
 import type { Schema } from '@/amplify/data/resource'
 import { generateClient } from 'aws-amplify/data'
-import { useData } from "@/contexts/DataContext";
-import { useEffect, useState } from "react";
+import { useUserData } from "@/contexts/UserDataContext";
 
 const client = generateClient<Schema>();
 
@@ -18,7 +17,7 @@ export default function MedicationForm({
   medication: Medication;
   setMedication: (medication: Medication) => void;
 }) {
-  const userData = useData();
+  const userData = useUserData();
 
   return (
     <Form.Root
@@ -313,7 +312,7 @@ export default function MedicationForm({
         </Form.Control>
       </Form.Field>
       <Form.Submit asChild>
-        <button className="w-full rounded-md bg-blue-200 text-blue-800 p-2 hover:bg-blue-300 transition-colors">
+        <button className="mt-2 w-full rounded-md bg-blue-200 text-blue-800 p-2 hover:bg-blue-300 transition-colors">
           Add Medication Schedule
         </button>
       </Form.Submit>

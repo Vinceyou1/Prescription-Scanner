@@ -1,5 +1,3 @@
-"use client"
-
 export default function MySchedule() {
 	return (
 		<div className="h-full rounded-xl p-4 w-full bg-white border-1 border-gray-300 items-center flex">

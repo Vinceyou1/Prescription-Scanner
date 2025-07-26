@@ -3,7 +3,7 @@ import { MdCalendarMonth } from "react-icons/md";
 import { TbPill } from "react-icons/tb";
 import { FiInfo } from "react-icons/fi";
 import Login from './login';
-import { useUser } from '@/contexts/UserContext';
+import { useAuth } from '@/contexts/AuthContext';
 import Logout from './logout';
 
 const data = [
@@ -19,7 +19,7 @@ export function Navigation({
   tab: string;
   setTab: Dispatch<SetStateAction<string>>;
 }>) {
-  const user = useUser();
+  const auth = useAuth();
 
   const links = data.map((item) => (
     <button
@@ -50,7 +50,7 @@ export function Navigation({
         </div>
       </div>
       <div className="pt-4 border-t-1 border-gray-300">
-        {user ? <Logout /> : <Login />}
+        {auth ? <Logout /> : <Login />}
       </div>
     </nav>
   );

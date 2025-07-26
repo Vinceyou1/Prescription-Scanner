@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import MedicationWebcam from "./webcam";
 import Upload from "./upload";
 import Tesseract from "tesseract.js";
-import { Medication, Time, timeNumberToTime } from "@/data/types";
+import { Medication, Time } from "@/data/types";
+import { timeNumberToTime } from "@/data/utilities";
 import MedicationForm from "./medication-form";
 
 

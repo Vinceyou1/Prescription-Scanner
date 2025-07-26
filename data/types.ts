@@ -15,27 +15,13 @@ export type Medication = {
 	notes: string,
 };
 
+/**
+ * @property {number} hour - 0-11
+ * @property {number} minute - 0-59
+ * @property {boolean} isPM - true for PM, false for AM
+ */
 export type Time = {
-	hour: number, // 0-11
-	minute: number, // 0-59
-	isPM: boolean, // true for PM, false for AM
-}
-
-export function timeNumberToTime(time: number): Time {
-	const minute = time % 100;
-	let hour = Math.floor(time / 100);
-	const isPM = hour >= 12;
-	if (isPM) hour -= 12;
-	if (hour === 0) hour = 12; // 12 AM or 12 PM
-	return { hour, minute, isPM };
-}
-
-// TODO: figure out timezone stuff? not really necessary tbh
-
-export function timeToString(time: Time) {
-	return (
-		(time.hour || 12).toString().padStart(2, "0") + ":" +
-		time.minute.toString().padStart(2, "0") + " " +
-		(time.isPM ? "PM": "AM")
-	);
+	hour: number,
+	minute: number,
+	isPM: boolean,
 }
