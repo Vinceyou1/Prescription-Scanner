@@ -23,7 +23,7 @@ export default function About() {
 					<Image
 						width={400}
 						height={0}
-						src="/labels/VA_Prescription.jpg"
+						src="/labels/druglabel.jpg"
 						alt=""
 						className="ml-auto"
 					/>

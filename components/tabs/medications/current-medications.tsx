@@ -20,14 +20,14 @@ export default function CurrentMedications() {
 			{medicationsLoading ? (
 				<p>Loading...</p>
 			) : (
-				<div className="w-full flex flex-col gap-y-4">
+				<div className="w-full flex flex-col gap-y-4 overflow-y-auto">
 					{medications.map((medication, index) => (
 						<div key={index} className="p-4 rounded-lg flex flex-row items-center justify-between gap-2 bg-gray-100">
 							<div className="flex flex-col">
-								<p>
+								<p className="text-lg">
 									{medication.name} - {medication.quantity} {medication.unit}
 								</p>
-								<div className="text-sm mt-1 text-gray-500">
+								<div className="text-base mt-1 text-gray-500">
 									{
 										Array.from(medication.times.entries()).map(([day, times]) => (
 											<p key={medication.id + day}>
@@ -40,7 +40,7 @@ export default function CurrentMedications() {
 									</p>
 								</div>
 							</div>
-							<button onClick={() => deleteMedication(medication.id)} className="text-red-500 hover:text-red-700">
+							<button onClick={() => deleteMedication(medication.id)} className="text-red-500 hover:text-red-700 text-base">
 								Delete
 							</button>
 						</div>

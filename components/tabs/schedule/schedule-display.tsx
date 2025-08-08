@@ -12,7 +12,7 @@ import React from "react";
 
 type MedicationTime = Omit<MedicationData, "times"> & {
   time: Time;
-	index: number;
+  index: number;
 };
 
 export default function ScheduleDisplay({
@@ -23,44 +23,51 @@ export default function ScheduleDisplay({
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const [dayIndex, setDayIndex] = React.useState(new Date().getDay());
 
-	const getCycleDayWithOffset = (updatedAt: Date, cycleLength: number) => {
-		let cycleDay = getCycleDay(updatedAt, cycleLength);
-		const indexOffset = dayIndex - new Date().getDay();
-		cycleDay += indexOffset;
-		while (cycleDay < 0) {
-			cycleDay += cycleLength;
-		}
-		cycleDay %= cycleLength;
-		return cycleDay;
-	};
+  const getCycleDayWithOffset = (updatedAt: Date, cycleLength: number) => {
+    let cycleDay = getCycleDay(updatedAt, cycleLength);
+    const indexOffset = dayIndex - new Date().getDay();
+    cycleDay += indexOffset;
+    while (cycleDay < 0) {
+      cycleDay += cycleLength;
+    }
+    cycleDay %= cycleLength;
+    return cycleDay;
+  };
 
   const medicationsForToday: MedicationTime[] = medications
     .filter((medication) => {
-      const cycleDay = getCycleDayWithOffset(medication.updatedAt, medication.period);
+      const cycleDay = getCycleDayWithOffset(
+        medication.updatedAt,
+        medication.period
+      );
       const times = medication.times.get(cycleDay);
       console.log("Cycle Day:", cycleDay, "Times:", times);
       return times !== undefined && times.length > 0;
     })
     .map((medication) => {
-      const cycleDay = getCycleDayWithOffset(medication.updatedAt, medication.period);
+      const cycleDay = getCycleDayWithOffset(
+        medication.updatedAt,
+        medication.period
+      );
       const times = medication.times.get(cycleDay);
       return times!.map((time, index) => {
         return { ...medication, time, index };
       });
     })
-    .flat().sort((a, b) => {
-			if(a.time.isPM != b.time.isPM) {
-				return a.time.isPM ? 1 : -1;
-			}
-			if (a.time.hour !== b.time.hour) {
-				return a.time.hour - b.time.hour;
-			}
-			return a.time.minute - b.time.minute;
-		});
+    .flat()
+    .sort((a, b) => {
+      if (a.time.isPM != b.time.isPM) {
+        return a.time.isPM ? 1 : -1;
+      }
+      if (a.time.hour !== b.time.hour) {
+        return a.time.hour - b.time.hour;
+      }
+      return a.time.minute - b.time.minute;
+    });
 
   return (
     <div className="w-full h-full flex flex-row gap-x-4">
-      <div className="flex-1 flex flex-col gap-y-4 h-full">
+      <div className="flex-1 flex flex-col gap-y-4 overflow-y-auto">
         {medicationsForToday.length === 0 ? (
           <div className="text-gray-500">
             No medications scheduled for today
@@ -69,20 +76,23 @@ export default function ScheduleDisplay({
           medicationsForToday.map((medication) => (
             <div
               key={medication.id + medication.index}
-              className="p-4 rounded-lg flex flex-col justify-between bg-gray-100"
+              className="p-4 rounded-lg flex flex-col bg-gray-100"
             >
-              <p>
-                {medication.name} - {medication.quantity} {medication.unit}
-              </p>
-              <div className="text-sm mt-1 text-gray-500">
-                {timeToString(medication.time)}
-                <p className="mt-1">Notes: {medication.notes || "None"}</p>
+              <div className="text-lg flex flex-row justify-between w-full">
+                <p>
+                  {medication.name} - {medication.quantity} {medication.unit}
+                </p>
+								<p>
+
+                  {timeToString(medication.time)}
+								</p>
               </div>
+              <p className="mt-1 text-base text-gray-500">Notes: {medication.notes || "None"}</p>
             </div>
           ))
         )}
       </div>
-      <div className="w-1/10 flex flex-col justify-between items-stretch gap-y-8">
+      <div className="w-1/5 flex flex-col justify-between items-stretch gap-y-8">
         {daysOfWeek.map((day, idx) => (
           <button
             key={day}
