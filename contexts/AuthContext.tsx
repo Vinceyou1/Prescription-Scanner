@@ -1,11 +1,10 @@
-"use client"
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { AuthUser, getCurrentUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
 
-const UserContext = createContext<AuthUser | null>(null);
+const AuthContext = createContext<AuthUser | null>(null);
 
-export const UserProvider = ({ children } : { children: React.ReactNode; }) => {
+export const AuthProvider = ({ children } : { children: React.ReactNode; }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
 
   const fetchUser = async () => {
@@ -30,10 +29,10 @@ export const UserProvider = ({ children } : { children: React.ReactNode; }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={user}>
+    <AuthContext.Provider value={user}>
       {children}
-    </UserContext.Provider>
+    </AuthContext.Provider>
   );
 };
 
-export const useUser = () => useContext(UserContext);
+export const useAuth = () => useContext(AuthContext);

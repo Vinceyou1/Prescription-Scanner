@@ -12,10 +12,10 @@ const videoConstraints = {
 };
 
 export default function MedicationWebcam({ 
-	disabled,
+	processing,
 	setImageSrc
 } : {
-	disabled: boolean,
+	processing: boolean,
 	setImageSrc: (src: string | null) => void
 }) {
 	const [open, setOpen] = useState(false);
@@ -35,9 +35,11 @@ export default function MedicationWebcam({
 
 	return (
 		<Dialog.Root open={open} onOpenChange={setOpen}>
-			<Dialog.Trigger asChild disabled={disabled}>
+			<Dialog.Trigger asChild disabled={processing}>
 				<button className="w-1/2 rounded-md bg-blue-200 text-blue-800 p-2 hover:bg-blue-300 transition-colors">
-					Scan Label
+					{
+						processing ? "Processing..." : "Take Picture"
+					}
 				</button>
 			</Dialog.Trigger>
 			<Dialog.Portal>

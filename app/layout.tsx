@@ -2,14 +2,9 @@
 import "./globals.css";
 
 import React from 'react';
-
-import { Amplify } from "aws-amplify";
-import outputs from "@/amplify_outputs.json"
-import { UserProvider } from "@/contexts/UserContext";
-
-
-Amplify.configure(outputs)
-
+import { AuthProvider } from "@/contexts/AuthContext";
+import { UserDataProvider } from "@/contexts/UserDataContext";
+import { MedicationDataProvider } from "@/contexts/MedicationDataContext";
 
 export default function RootLayout({
   children,
@@ -32,9 +27,13 @@ export default function RootLayout({
         // className={`${geist.variable} antialiased`}
         className="h-full"
       >
-        <UserProvider>
-          {children}
-        </UserProvider>
+        <AuthProvider>
+          <UserDataProvider>
+            <MedicationDataProvider>
+              {children}
+            </MedicationDataProvider>
+          </UserDataProvider>
+        </AuthProvider>
       </body>
     </html>
   );
