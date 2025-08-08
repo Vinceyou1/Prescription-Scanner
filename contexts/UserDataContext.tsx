@@ -38,7 +38,8 @@ export const UserDataProvider = ({
               await client.models.user
                 .create({
                   id: auth.signInDetails.loginId,
-                }).finally(() => {
+                })
+                .finally(() => {
                   console.log("User created");
                 });
             }

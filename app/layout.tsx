@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import "./globals.css";
 
-import React from 'react';
+import React from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { UserDataProvider } from "@/contexts/UserDataContext";
 import { MedicationDataProvider } from "@/contexts/MedicationDataContext";
@@ -12,10 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html 
-      lang="en"
-      className="h-full"
-    >
+    <html lang="en" className="h-full">
       <head>
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta
@@ -29,9 +26,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <UserDataProvider>
-            <MedicationDataProvider>
-              {children}
-            </MedicationDataProvider>
+            <MedicationDataProvider>{children}</MedicationDataProvider>
           </UserDataProvider>
         </AuthProvider>
       </body>

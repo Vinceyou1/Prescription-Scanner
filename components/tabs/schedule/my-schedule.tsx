@@ -10,7 +10,7 @@ export default function MySchedule() {
         <h1 className="max-h-full w-full text-center text-2xl">Loading...</h1>
       ) : medications.length > 0 ? (
         <div className="h-full w-full">
-          <ScheduleDisplay medications={medications}/>
+          <ScheduleDisplay medications={medications} />
         </div>
       ) : (
         <h1 className="w-full text-center text-2xl">

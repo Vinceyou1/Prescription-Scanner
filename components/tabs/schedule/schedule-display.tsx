@@ -82,12 +82,11 @@ export default function ScheduleDisplay({
                 <p>
                   {medication.name} - {medication.quantity} {medication.unit}
                 </p>
-								<p>
-
-                  {timeToString(medication.time)}
-								</p>
+                <p>{timeToString(medication.time)}</p>
               </div>
-              <p className="mt-1 text-base text-gray-500">Notes: {medication.notes || "None"}</p>
+              <p className="mt-1 text-base text-gray-500">
+                Notes: {medication.notes || "None"}
+              </p>
             </div>
           ))
         )}
