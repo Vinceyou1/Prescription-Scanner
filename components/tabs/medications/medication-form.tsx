@@ -3,8 +3,8 @@ import styles from "./styles.module.css";
 import { Medication, Time } from "@/data/types";
 import { FaRegTrashCan } from "react-icons/fa6";
 
-import type { Schema } from '@/amplify/data/resource'
-import { generateClient } from 'aws-amplify/data'
+import type { Schema } from "@/amplify/data/resource";
+import { generateClient } from "aws-amplify/data";
 import { useUserData } from "@/contexts/UserDataContext";
 
 const client = generateClient<Schema>();
@@ -24,24 +24,27 @@ export default function MedicationForm({
       onSubmit={(e) => {
         e.preventDefault();
         console.log("Submitted medication:", medication);
-        client.models.medication.create({
-          ...medication,
-          times: JSON.stringify(Object.fromEntries(medication.times)), // Convert Map to object for storage
-          userId: userData?.id || "",
-        }).then(() => {
-          console.log("Medication created successfully");
-          setMedication({
-            name: "",
-            quantity: 1,
-            unit: "",
-            period: 1,
-            times: new Map<number, Array<Time>>(),
-            notes: "",
+        client.models.medication
+          .create({
+            ...medication,
+            times: JSON.stringify(Object.fromEntries(medication.times)), // Convert Map to object for storage
+            userId: userData?.id || "",
+          })
+          .then(() => {
+            console.log("Medication created successfully");
+            setMedication({
+              name: "",
+              quantity: 1,
+              unit: "",
+              period: 1,
+              times: new Map<number, Array<Time>>(),
+              notes: "",
+            });
+          })
+          .catch((error) => {
+            console.error("Error creating medication:", error);
+            alert("Failed to create medication. Please try again.");
           });
-        }).catch((error) => {
-          console.error("Error creating medication:", error);
-          alert("Failed to create medication. Please try again.");
-        });
         // Here you would typically handle the submission, e.g., send to an API
       }}
     >
@@ -164,134 +167,134 @@ export default function MedicationForm({
                   + Add Time
                 </button>
               </div>
-							<div className="flex flex-wrap gap-2">
-								{!medication.times.has(dayIdx) && (
-									<div className="text-gray-500 text-sm">
-										No alarms set for this day.
-									</div>
-								)}
-								{(medication.times.get(dayIdx) ?? []).map((time, alarmIdx) => (
-									<span
-										key={alarmIdx}
-										className="flex flex-row gap-2 border border-gray-300 items-center p-2 rounded"
-										style={{ minWidth: "fit-content" }}
-									>
-										{/* Hour Select */}
-										<Form.Field name={`hour-${dayIdx}-${alarmIdx}`}>
-											<Form.Control asChild>
-												<select
-													className="appearance-none bg-gray-200 text-base px-4 py-2 rounded-sm"
-													defaultValue={time.hour || 12}
-													onChange={(e) => {
-														const newTime: Time = {
-															hour: Number(e.target.value),
-															minute: time.minute,
-															isPM: time.isPM,
-														};
-														const timesForDay = [
-															...(medication.times.get(dayIdx) ?? []),
-														];
-														timesForDay[alarmIdx] = newTime;
-														const newTimes = new Map(medication.times);
-														newTimes.set(dayIdx, timesForDay);
-														setMedication({
-															...medication,
-															times: newTimes,
-														});
-													}}
-												>
-													{Array.from({ length: 12 }, (_, i) => (
-														<option key={i + 1} value={i + 1}>
-															{(i + 1).toString().padStart(2, "0")}
-														</option>
-													))}
-												</select>
-											</Form.Control>
-										</Form.Field>
-										{/* Minute Select */}
-										<Form.Field name={`minute-${dayIdx}-${alarmIdx}`}>
-											<Form.Control asChild>
-												<select
-													className="appearance-none bg-gray-200 text-base px-4 py-2 rounded-sm"
-													defaultValue={time.minute}
-													onChange={(e) => {
-														const newTime: Time = {
-															hour: time.hour,
-															minute: Number(e.target.value),
-															isPM: time.isPM,
-														};
-														const timesForDay = [
-															...(medication.times.get(dayIdx) ?? []),
-														];
-														timesForDay[alarmIdx] = newTime;
-														const newTimes = new Map(medication.times);
-														newTimes.set(dayIdx, timesForDay);
-														setMedication({
-															...medication,
-															times: newTimes,
-														});
-													}}
-												>
-													{[0, 15, 30, 45].map((min) => (
-														<option key={min} value={min}>
-															{min.toString().padStart(2, "0")}
-														</option>
-													))}
-												</select>
-											</Form.Control>
-										</Form.Field>
-										{/* AM/PM Select */}
-										<Form.Field name={`ampm-${dayIdx}-${alarmIdx}`}>
-											<Form.Control asChild>
-												<select
-													className="appearance-none bg-gray-200 text-base px-4 py-2 rounded-sm"
-													defaultValue={time.isPM ? "PM" : "AM"}
-													onChange={(e) => {
-														const newTime: Time = {
-															hour: time.hour,
-															minute: time.minute,
-															isPM: e.target.value === "PM",
-														};
-														const timesForDay = [
-															...(medication.times.get(dayIdx) ?? []),
-														];
-														timesForDay[alarmIdx] = newTime;
-														const newTimes = new Map(medication.times);
-														newTimes.set(dayIdx, timesForDay);
-														setMedication({
-															...medication,
-															times: newTimes,
-														});
-													}}
-												>
-													<option value="AM">AM</option>
-													<option value="PM">PM</option>
-												</select>
-											</Form.Control>
-										</Form.Field>
-										{/* Delete Button */}
-										<button
-											type="button"
-											className="text-red-500"
-											onClick={() => {
-												const timesForDay = [
-													...(medication.times.get(dayIdx) ?? []),
-												];
-												timesForDay.splice(alarmIdx, 1);
-												const newTimes = new Map(medication.times);
-												newTimes.set(dayIdx, timesForDay);
-												if (timesForDay.length === 0) {
-													newTimes.delete(dayIdx);
-												}
-												setMedication({ ...medication, times: newTimes });
-											}}
-											title="Delete alarm"
-										>
-											<FaRegTrashCan className="w-5 h-5" />
-										</button>
-									</span>
-								))}
-							</div>
+              <div className="flex flex-wrap gap-2">
+                {!medication.times.has(dayIdx) && (
+                  <div className="text-gray-500 text-sm">
+                    No alarms set for this day.
+                  </div>
+                )}
+                {(medication.times.get(dayIdx) ?? []).map((time, alarmIdx) => (
+                  <span
+                    key={alarmIdx}
+                    className="flex flex-row gap-2 border border-gray-300 items-center p-2 rounded"
+                    style={{ minWidth: "fit-content" }}
+                  >
+                    {/* Hour Select */}
+                    <Form.Field name={`hour-${dayIdx}-${alarmIdx}`}>
+                      <Form.Control asChild>
+                        <select
+                          className="appearance-none bg-gray-200 text-base px-4 py-2 rounded-sm"
+                          defaultValue={time.hour || 12}
+                          onChange={(e) => {
+                            const newTime: Time = {
+                              hour: Number(e.target.value),
+                              minute: time.minute,
+                              isPM: time.isPM,
+                            };
+                            const timesForDay = [
+                              ...(medication.times.get(dayIdx) ?? []),
+                            ];
+                            timesForDay[alarmIdx] = newTime;
+                            const newTimes = new Map(medication.times);
+                            newTimes.set(dayIdx, timesForDay);
+                            setMedication({
+                              ...medication,
+                              times: newTimes,
+                            });
+                          }}
+                        >
+                          {Array.from({ length: 12 }, (_, i) => (
+                            <option key={i + 1} value={i + 1}>
+                              {(i + 1).toString().padStart(2, "0")}
+                            </option>
+                          ))}
+                        </select>
+                      </Form.Control>
+                    </Form.Field>
+                    {/* Minute Select */}
+                    <Form.Field name={`minute-${dayIdx}-${alarmIdx}`}>
+                      <Form.Control asChild>
+                        <select
+                          className="appearance-none bg-gray-200 text-base px-4 py-2 rounded-sm"
+                          defaultValue={time.minute}
+                          onChange={(e) => {
+                            const newTime: Time = {
+                              hour: time.hour,
+                              minute: Number(e.target.value),
+                              isPM: time.isPM,
+                            };
+                            const timesForDay = [
+                              ...(medication.times.get(dayIdx) ?? []),
+                            ];
+                            timesForDay[alarmIdx] = newTime;
+                            const newTimes = new Map(medication.times);
+                            newTimes.set(dayIdx, timesForDay);
+                            setMedication({
+                              ...medication,
+                              times: newTimes,
+                            });
+                          }}
+                        >
+                          {[0, 15, 30, 45].map((min) => (
+                            <option key={min} value={min}>
+                              {min.toString().padStart(2, "0")}
+                            </option>
+                          ))}
+                        </select>
+                      </Form.Control>
+                    </Form.Field>
+                    {/* AM/PM Select */}
+                    <Form.Field name={`ampm-${dayIdx}-${alarmIdx}`}>
+                      <Form.Control asChild>
+                        <select
+                          className="appearance-none bg-gray-200 text-base px-4 py-2 rounded-sm"
+                          defaultValue={time.isPM ? "PM" : "AM"}
+                          onChange={(e) => {
+                            const newTime: Time = {
+                              hour: time.hour,
+                              minute: time.minute,
+                              isPM: e.target.value === "PM",
+                            };
+                            const timesForDay = [
+                              ...(medication.times.get(dayIdx) ?? []),
+                            ];
+                            timesForDay[alarmIdx] = newTime;
+                            const newTimes = new Map(medication.times);
+                            newTimes.set(dayIdx, timesForDay);
+                            setMedication({
+                              ...medication,
+                              times: newTimes,
+                            });
+                          }}
+                        >
+                          <option value="AM">AM</option>
+                          <option value="PM">PM</option>
+                        </select>
+                      </Form.Control>
+                    </Form.Field>
+                    {/* Delete Button */}
+                    <button
+                      type="button"
+                      className="text-red-500"
+                      onClick={() => {
+                        const timesForDay = [
+                          ...(medication.times.get(dayIdx) ?? []),
+                        ];
+                        timesForDay.splice(alarmIdx, 1);
+                        const newTimes = new Map(medication.times);
+                        newTimes.set(dayIdx, timesForDay);
+                        if (timesForDay.length === 0) {
+                          newTimes.delete(dayIdx);
+                        }
+                        setMedication({ ...medication, times: newTimes });
+                      }}
+                      title="Delete alarm"
+                    >
+                      <FaRegTrashCan className="w-5 h-5" />
+                    </button>
+                  </span>
+                ))}
+              </div>
             </div>
           ))}
         </div>

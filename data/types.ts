@@ -7,12 +7,12 @@
  * @property {string} notes - any additional notes (i.e. take with food)
  */
 export type Medication = {
-	name: string,
-	quantity: number,
-	unit: string,
-	period: number,
-	times: Map<number, Array<Time>>,
-	notes: string,
+  name: string;
+  quantity: number;
+  unit: string;
+  period: number;
+  times: Map<number, Array<Time>>;
+  notes: string;
 };
 
 /**
@@ -21,7 +21,7 @@ export type Medication = {
  * @property {boolean} isPM - true for PM, false for AM
  */
 export type Time = {
-	hour: number,
-	minute: number,
-	isPM: boolean,
-}
+  hour: number;
+  minute: number;
+  isPM: boolean;
+};

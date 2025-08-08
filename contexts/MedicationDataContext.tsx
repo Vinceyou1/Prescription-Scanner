@@ -6,9 +6,9 @@ import { Medication, Time } from "@/data/types";
 import { useAuth } from "./AuthContext";
 
 import { Amplify } from "aws-amplify";
-import outputs from "@/amplify_outputs.json"
+import outputs from "@/amplify_outputs.json";
 
-Amplify.configure(outputs)
+Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
 
@@ -73,7 +73,7 @@ export const MedicationDataProvider = ({
         complete: () => {
           console.log("Medication data fetch complete");
           setLoading(false);
-        }
+        },
       });
     return () => sub.unsubscribe();
   }, [auth]);

@@ -1,20 +1,20 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from "react";
 import { MdCalendarMonth } from "react-icons/md";
 import { TbPill } from "react-icons/tb";
 import { FiInfo } from "react-icons/fi";
-import Login from './login';
-import { useAuth } from '@/contexts/AuthContext';
-import Logout from './logout';
+import Login from "./login";
+import { useAuth } from "@/contexts/AuthContext";
+import Logout from "./logout";
 
 const data = [
-  { label: 'My Schedule', icon: MdCalendarMonth },
-  { label: 'Medications', icon: TbPill },
-  { label: 'About', icon: FiInfo },
+  { label: "My Schedule", icon: MdCalendarMonth },
+  { label: "Medications", icon: TbPill },
+  { label: "About", icon: FiInfo },
 ];
 
 export function Navigation({
   tab,
-  setTab
+  setTab,
 }: Readonly<{
   tab: string;
   setTab: Dispatch<SetStateAction<string>>;
@@ -43,11 +43,11 @@ export function Navigation({
       <div className="flex flex-col space-y-4">
         <div className="flex flex-row items-center justify-between pb-4 border-b-1 border-gray-300">
           <h1 className="text-xl ">AI Pill Planner</h1>
-          <span className="text-sm rounded-md bg-gray-200 px-2 py-1 text-black font-medium">v1.0</span>
+          <span className="text-sm rounded-md bg-gray-200 px-2 py-1 text-black font-medium">
+            v1.0
+          </span>
         </div>
-        <div className="flex flex-col justify-stretch gap-y-4">
-          {links}
-        </div>
+        <div className="flex flex-col justify-stretch gap-y-4">{links}</div>
       </div>
       <div className="pt-4 border-t-1 border-gray-300">
         {auth ? <Logout /> : <Login />}

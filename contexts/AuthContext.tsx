@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { AuthUser, getCurrentUser } from '@aws-amplify/auth';
-import { Hub } from '@aws-amplify/core';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { AuthUser, getCurrentUser } from "@aws-amplify/auth";
+import { Hub } from "@aws-amplify/core";
 
 const AuthContext = createContext<AuthUser | null>(null);
 
-export const AuthProvider = ({ children } : { children: React.ReactNode; }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
 
   const fetchUser = async () => {
@@ -19,8 +19,8 @@ export const AuthProvider = ({ children } : { children: React.ReactNode; }) => {
   useEffect(() => {
     fetchUser();
 
-    const unsubscribe = Hub.listen('auth', ({ payload: { event } }) => {
-      if (event === 'signedIn' || event === 'signedOut') {
+    const unsubscribe = Hub.listen("auth", ({ payload: { event } }) => {
+      if (event === "signedIn" || event === "signedOut") {
         fetchUser();
       }
     });
@@ -28,11 +28,7 @@ export const AuthProvider = ({ children } : { children: React.ReactNode; }) => {
     return () => unsubscribe();
   }, []);
 
-  return (
-    <AuthContext.Provider value={user}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);
