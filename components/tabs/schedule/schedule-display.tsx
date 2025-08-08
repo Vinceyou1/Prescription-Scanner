@@ -1,5 +1,5 @@
 import { MedicationData } from "@/contexts/MedicationDataContext";
-import { Medication, Time } from "@/data/types";
+import { Time } from "@/data/types";
 import { getCycleDay, timeToString } from "@/data/utilities";
 import React from "react";
 
@@ -36,7 +36,7 @@ export default function ScheduleDisplay({
 
   const medicationsForToday: MedicationTime[] = medications
     .filter((medication) => {
-      let cycleDay = getCycleDayWithOffset(medication.updatedAt, medication.period);
+      const cycleDay = getCycleDayWithOffset(medication.updatedAt, medication.period);
       const times = medication.times.get(cycleDay);
       console.log("Cycle Day:", cycleDay, "Times:", times);
       return times !== undefined && times.length > 0;
