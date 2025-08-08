@@ -39,9 +39,6 @@ export const UserDataProvider = ({
                 .create({
                   id: auth.signInDetails.loginId,
                 })
-                .finally(() => {
-                  console.log("User created");
-                });
             }
           }
         },

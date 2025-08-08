@@ -21,9 +21,7 @@ export default function MedicationWebcam({
   const webcamRef = useRef<Webcam | null>(null);
   const [imageSrcTemp, setImageSrcTemp] = useState<string | null>(null);
   function capture() {
-    console.log(imageSrcTemp);
     if (imageSrcTemp) {
-      console.log("here!");
       setOpen(false);
       setImageSrc(imageSrcTemp);
       return;

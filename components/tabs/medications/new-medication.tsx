@@ -24,10 +24,8 @@ export default function NewMedication() {
     const {
       data: { text: ocrOutput },
     } = await Tesseract.recognize(image, "eng");
-    console.log("OCR Output:", ocrOutput);
 
     try {
-      console.log("-".repeat(53));
       const response = await fetch(
         "https://st7wy4wuh5.execute-api.us-east-1.amazonaws.com/prod/call-bedrock",
         {
@@ -40,8 +38,6 @@ export default function NewMedication() {
           }),
         }
       );
-      console.log(response);
-      console.log("Body:", response.body);
       const stream = response.body as ReadableStream;
       const reader = stream.getReader();
       let result = "";
@@ -60,7 +56,6 @@ export default function NewMedication() {
       const parsedResult = JSON.parse(
         JSON.parse(result).body.output.message.content[0].text
       );
-      console.log(parsedResult);
       const medication: Medication = {
         name: parsedResult.name || "",
         quantity: parsedResult.quantity || 0,
@@ -70,7 +65,6 @@ export default function NewMedication() {
         notes: parsedResult.notes || "",
       };
       for (const [day, times] of Object.entries(parsedResult.times || {})) {
-        console.log(day, times);
         const convertedTimes = times as Array<number>;
         medication.times.set(
           Number(day),
@@ -79,16 +73,13 @@ export default function NewMedication() {
           })
         );
       }
-      console.log("Parsed Result:", parsedResult);
-      console.log("Medication Object:", medication);
 
       setImageSrc(null); // Clear the image after processing
       setMedication(medication); // Update the medication state
     } catch (err) {
+      alert("Failed to generate medication summary. Please try again.");
       setImageSrc(null); // Clear the image after processing
-      console.log(err);
     }
-    // console.log("Generated result:", result);
   }, []);
 
   useEffect(() => {
@@ -108,19 +99,6 @@ export default function NewMedication() {
         <Upload setImageSrc={setImageSrc} processing={imageSrc != null} />
       </div>
       <MedicationForm medication={medication} setMedication={setMedication} />
-      {/* For Testing */}
-      {/* <div>
-				Name: {medication.name}<br />
-				Quantity: {medication.quantity}<br />
-				Unit: {medication.unit}<br />
-				Period: {medication.period}<br />
-				Times: {Array.from(medication.times.entries()).map(([day, times]) => (
-					<div key={day}>
-						Day {day}: {times.map(time => timeToString(time)).join(", ")}
-					</div>
-				))}<br />
-				Notes: {medication.notes}	
-			</div> */}
     </div>
   );
 }

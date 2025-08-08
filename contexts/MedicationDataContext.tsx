@@ -45,7 +45,6 @@ export const MedicationDataProvider = ({
       })
       .subscribe({
         next: ({ items }) => {
-          console.log("Fetched medications:", items);
           setLoading(false);
           const meds: MedicationData[] = items.map((medication) => {
             let timesJSON = JSON.parse(medication.times as string);
@@ -67,11 +66,9 @@ export const MedicationDataProvider = ({
           setMedications(meds);
         },
         error: (error) => {
-          console.error("Error fetching medications:", error);
           setMedications([]);
         },
         complete: () => {
-          console.log("Medication data fetch complete");
           setLoading(false);
         },
       });

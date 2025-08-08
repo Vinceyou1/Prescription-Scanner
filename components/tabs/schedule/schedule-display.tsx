@@ -41,7 +41,6 @@ export default function ScheduleDisplay({
         medication.period
       );
       const times = medication.times.get(cycleDay);
-      console.log("Cycle Day:", cycleDay, "Times:", times);
       return times !== undefined && times.length > 0;
     })
     .map((medication) => {

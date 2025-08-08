@@ -23,7 +23,6 @@ export default function MedicationForm({
       className="w-full"
       onSubmit={(e) => {
         e.preventDefault();
-        console.log("Submitted medication:", medication);
         client.models.medication
           .create({
             ...medication,
@@ -31,7 +30,6 @@ export default function MedicationForm({
             userId: userData?.id || "",
           })
           .then(() => {
-            console.log("Medication created successfully");
             setMedication({
               name: "",
               quantity: 1,
@@ -42,7 +40,6 @@ export default function MedicationForm({
             });
           })
           .catch((error) => {
-            console.error("Error creating medication:", error);
             alert("Failed to create medication. Please try again.");
           });
         // Here you would typically handle the submission, e.g., send to an API
