@@ -5,9 +5,14 @@ import { generateClient } from "aws-amplify/data";
 import { Medication, Time } from "@/data/types";
 import { useAuth } from "./AuthContext";
 
+import { Amplify } from "aws-amplify";
+import outputs from "@/amplify_outputs.json"
+
+Amplify.configure(outputs)
+
 const client = generateClient<Schema>();
 
-type MedicationData = Medication & {
+export type MedicationData = Medication & {
   updatedAt: Date;
   id: string;
 };
@@ -40,6 +45,7 @@ export const MedicationDataProvider = ({
       })
       .subscribe({
         next: ({ items }) => {
+          console.log("Fetched medications:", items);
           setLoading(false);
           const meds: MedicationData[] = items.map((medication) => {
             let timesJSON = JSON.parse(medication.times as string);
@@ -60,6 +66,14 @@ export const MedicationDataProvider = ({
           });
           setMedications(meds);
         },
+        error: (error) => {
+          console.error("Error fetching medications:", error);
+          setMedications([]);
+        },
+        complete: () => {
+          console.log("Medication data fetch complete");
+          setLoading(false);
+        }
       });
     return () => sub.unsubscribe();
   }, [auth]);

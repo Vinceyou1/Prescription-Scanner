@@ -1,4 +1,3 @@
-// import * as React from "react";
 import * as Form from "@radix-ui/react-form";
 import styles from "./styles.module.css";
 import { Medication, Time } from "@/data/types";
@@ -118,7 +117,7 @@ export default function MedicationForm({
               return; // Ignore invalid values
             }
             // remove days past period length
-            let toDelete: number[] = [];
+            const toDelete: number[] = [];
             medication.times.forEach((times, day) => {
               if (day >= periodValue) {
                 toDelete.push(day);
@@ -147,7 +146,7 @@ export default function MedicationForm({
                 <span>Day {dayIdx + 1}</span>
                 <button
                   type="button"
-                  className="text-blue-500 text-sm"
+                  className="text-blue-500 text-sm hover:text-blue-700"
                   onClick={() => {
                     const timesForDay = [
                       ...(medication.times.get(dayIdx) ?? []),
@@ -303,7 +302,7 @@ export default function MedicationForm({
         </div>
         <Form.Control asChild>
           <textarea
-            defaultValue={medication.notes}
+            value={medication.notes}
             onChange={(e) => {
               setMedication({ ...medication, notes: e.target.value });
             }}

@@ -2,14 +2,9 @@
 import "./globals.css";
 
 import React from 'react';
-
-import { Amplify } from "aws-amplify";
-import outputs from "@/amplify_outputs.json"
 import { AuthProvider } from "@/contexts/AuthContext";
 import { UserDataProvider } from "@/contexts/UserDataContext";
 import { MedicationDataProvider } from "@/contexts/MedicationDataContext";
-
-Amplify.configure(outputs)
 
 export default function RootLayout({
   children,

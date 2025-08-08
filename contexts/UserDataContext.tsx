@@ -14,7 +14,6 @@ export const UserDataProvider = ({
   const auth = useAuth();
   const client = generateClient<Schema>();
   const [userData, setUserData] = useState<Schema["user"]["type"] | null>(null);
-
   useEffect(() => {
     setUserData(null);
     if (!auth || !auth.signInDetails?.loginId) {

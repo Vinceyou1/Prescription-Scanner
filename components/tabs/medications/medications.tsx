@@ -1,10 +1,5 @@
-import NewMedication from "./new-medication";
-
-import type { Schema } from '@/amplify/data/resource'
-import { generateClient } from 'aws-amplify/data'
 import CurrentMedications from "./current-medications";
-
-const client = generateClient<Schema>()
+import NewMedication from "./new-medication";
 
 export default function Medications() {
 	return (

@@ -2,7 +2,7 @@
 import About from "@/components/tabs/about";
 import { Navigation } from "../components/navigation";
 import { useState } from "react";
-import MySchedule from "@/components/tabs/my-schedule";
+import MySchedule from "@/components/tabs/schedule/my-schedule";
 import Medications from "@/components/tabs/medications/medications";
 import { useAuth } from "@/contexts/AuthContext";
 import PleaseLogin from "@/components/tabs/please-login";

@@ -2,11 +2,10 @@
 import { differenceInCalendarDays } from 'date-fns';
 import { Time } from './types';
 
-export default function getCycleDay(updatedAt: Date, cycleLengthInDays: number): number {
+export function getCycleDay(updatedAt: Date, cycleLength: number): number {
 	const today = new Date();
 	const elapsedDays = differenceInCalendarDays(today, updatedAt);
-	console.log ("Elapsed Days:", elapsedDays);
-	const cycleDay = ((elapsedDays % cycleLengthInDays) + cycleLengthInDays) % cycleLengthInDays;
+	const cycleDay = ((elapsedDays % cycleLength) + cycleLength) % cycleLength;
 	return cycleDay;
 }
 

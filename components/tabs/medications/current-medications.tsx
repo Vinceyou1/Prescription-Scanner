@@ -7,7 +7,7 @@ const client = generateClient<Schema>();
 
 export default function CurrentMedications() {
 	const [medications, medicationsLoading] = useMedicationData();
-	
+
 	async function deleteMedication(medicationId: string) {
 		await client.models.medication.delete({
 			id: medicationId
@@ -22,7 +22,7 @@ export default function CurrentMedications() {
 			) : (
 				<div className="w-full flex flex-col gap-y-4">
 					{medications.map((medication, index) => (
-						<div key={index} className="p-4 border-1 border-gray-300 rounded-lg flex flex-row items-center justify-between gap-2 bg-gray-100">
+						<div key={index} className="p-4 rounded-lg flex flex-row items-center justify-between gap-2 bg-gray-100">
 							<div className="flex flex-col">
 								<p>
 									{medication.name} - {medication.quantity} {medication.unit}
@@ -39,7 +39,6 @@ export default function CurrentMedications() {
 										Notes: {medication.notes || "None"}
 									</p>
 								</div>
-								
 							</div>
 							<button onClick={() => deleteMedication(medication.id)} className="text-red-500 hover:text-red-700">
 								Delete
